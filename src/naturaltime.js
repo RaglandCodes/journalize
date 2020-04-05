@@ -11,7 +11,14 @@
  * @return {string}
  * @example
  *
- * TODO examples
+ * var journalize = require('journalize');
+ * 
+ * journalize.naturaltime(new Date(2007, 1, 26, 18, 31, 29), new Date(2007, 1, 17, 16, 30, 0))
+ * // returns '1 week, 2 days from now'
+ *
+ * journalize.naturaltime(new Date(2007, 1, 17, 15, 30, 01))
+ * //returns 59 minutes ago
+
  */
 
 export default function naturaltime(targetTime, timeNow = new Date()) {

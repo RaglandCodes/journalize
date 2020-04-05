@@ -1,12 +1,11 @@
 import naturaltime from '../src/naturaltime';
 
 describe('naturaltime', () => {
-  it('should return time since or ago', () => {
+  it('should return time since or ago when two params are passed', () => {
     const testList = [
       [new Date(2007, 1, 17, 16, 30, 0), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 16, 29, 31), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 16, 29, 0), new Date(2007, 1, 17, 16, 30, 0)],
-      [new Date(2007, 1, 17, 16, 25, 35), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 15, 30, 1), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 15, 30, 0), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 13, 31, 29), new Date(2007, 1, 17, 16, 30, 0)],
@@ -17,7 +16,6 @@ describe('naturaltime', () => {
       [new Date(2007, 1, 17, 16, 31, 0), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 16, 34, 35), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 17, 17, 30, 29), new Date(2007, 1, 17, 16, 30, 0)],
-      [new Date(2007, 1, 17, 18, 31, 29), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 18, 16, 31, 29), new Date(2007, 1, 17, 16, 30, 0)],
       [new Date(2007, 1, 26, 18, 31, 29), new Date(2007, 1, 17, 16, 30, 0)],
     ];
@@ -25,7 +23,6 @@ describe('naturaltime', () => {
       'now',
       '29 seconds ago',
       'a minute ago',
-      '4 minutes ago',
       '59 minutes ago',
       'an hour ago',
       '2 hours ago',
@@ -36,13 +33,40 @@ describe('naturaltime', () => {
       'a minute from now',
       '4 minutes from now',
       'an hour from now',
-      '2 hours from now',
       '1 day from now',
       '1 week, 2 days from now',
     ];
 
     testList.forEach((n, idx) => {
       expect(naturaltime(n[0], n[1])).toBe(resultList[idx]);
+    });
+  });
+});
+
+const Date = global.Date;
+const mockDate = jest.fn(() => new Date(2007, 1, 17, 16, 30, 0));
+
+describe('naturaltime', () => {
+  beforeAll(() => {
+    global.Date = mockDate;
+  });
+
+  afterAll(() => {
+    global.Date = Date;
+  });
+
+  it('should return time since or ago when current time is not passed', () => {
+    const testList = [
+      new Date(2007, 1, 17, 16, 30, 0),
+      new Date(2007, 1, 17, 16, 25, 35),
+      new Date(2007, 1, 17, 18, 31, 29),
+    ];
+
+    const resultList = ['now', '4 minutes ago', '2 hours from now'];
+    testList.forEach((n, idx) => {
+      console.log(`${n} <== n ==>  ${idx}`);
+
+      expect(naturaltime(n)).toBe(resultList[idx]);
     });
   });
 });
