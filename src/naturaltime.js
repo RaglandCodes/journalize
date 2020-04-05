@@ -11,11 +11,10 @@
  * @return {string}
  * @example
  *
- * TODO examples and test
+ * TODO examples
  */
 
-//export default
-function naturaltime(targetTime, timeNow = new Date()) {
+export default function naturaltime(targetTime, timeNow = new Date()) {
   if (targetTime.getTime() === timeNow.getTime()) {
     return `now`;
   }
@@ -24,14 +23,6 @@ function naturaltime(targetTime, timeNow = new Date()) {
   if (targetTime > timeNow) {
     timeAdverb = 'from now';
   }
-
-  console.log(timeAdverb);
-
-  console.log(`${timeNow} <== timeNow`);
-
-  console.log(`${targetTime} <== targetTime`);
-
-  console.log(`${targetTime - timeNow} <== targetTime - timeNow`);
 
   let timeDiffereneInSeconds = Math.floor((targetTime - timeNow) / 1000);
 
@@ -46,13 +37,12 @@ function naturaltime(targetTime, timeNow = new Date()) {
   }
 
   let timeDiferenceInMinutes = Math.floor(timeDiffereneInSeconds / 60);
-  console.log(`${timeDiferenceInMinutes} <== timeDiferenceInMinutes`);
   if (timeDiferenceInMinutes === 1) {
     return `a minute ${timeAdverb}`;
   }
 
   if (timeDiferenceInMinutes === 60) {
-    return `an hour ago`;
+    return `an hour ${timeAdverb}`;
   }
   if (timeDiferenceInMinutes < 60) {
     return `${timeDiferenceInMinutes} minutes ${timeAdverb}`;
@@ -61,26 +51,14 @@ function naturaltime(targetTime, timeNow = new Date()) {
   let timeDiferenceInHours = Math.floor(timeDiferenceInMinutes / 60);
   let hoursWord = timeDiferenceInHours === 1 ? 'hour' : 'hours';
 
-  let remainingMinutes = timeDiferenceInMinutes - timeDiferenceInHours * 60;
-  console.log(`${timeDiferenceInHours} <== timeDiferenceInHours`);
-  if (timeDiferenceInHours < 24 && remainingMinutes === 0) {
-    return `${timeDiferenceInHours} hours ${timeAdverb}`;
-  }
   if (timeDiferenceInHours < 24) {
-    if (remainingMinutes === 0) {
-      return `${timeDiferenceInHours} ${hoursWord} ${timeAdverb}`;
-    }
-
-    let remainingMinutesWord = remainingMinutes === 1 ? 'minute' : 'minutes';
-    return `${timeDiferenceInHours} ${hoursWord}, ${remainingMinutes} ${remainingMinutesWord} ${timeAdverb}`;
+    return `${timeDiferenceInHours} ${hoursWord} ${timeAdverb}`;
   }
 
-  if (timeDiferenceInHours === 24) {
-    return `a day ago`;
-  }
   let timeDiferenceInDays = Math.floor(timeDiferenceInHours / 24);
-  console.log(`${timeDiferenceInDays} <== timeDiferenceInDays`);
   let daysWord = timeDiferenceInDays === 1 ? 'day' : 'days';
+
+  let remainingHours = timeDiferenceInHours - timeDiferenceInDays * 24;
 
   if (timeDiferenceInDays < 7) {
     if (remainingHours === 0) {
@@ -104,13 +82,4 @@ function naturaltime(targetTime, timeNow = new Date()) {
   }
   let remainingDaysWord = remainingDays === 1 ? 'day' : 'days';
   return `${timeDiferenceInWeeks} ${weeksWords}, ${remainingDays} ${remainingDaysWord} ${timeAdverb}`;
-
-  console.log(`${timeDiferenceInWeeks} <== timeDiferenceInWeeks`);
 }
-
-console.log(
-  `${naturaltime(
-    new Date(2021, 3, 16, 0, 0, 55),
-    new Date(2020, 3, 1, 2, 55, 8)
-  )} <== natiraltime(new Date(2020, 3, 6))`
-);
